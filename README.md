@@ -7,18 +7,17 @@ labelled references between objects. We call the label type a `slot`. Slots are
 expected to be unique within an object although they might not be unique within
 the graph. Edges are uniquely identified by a tuple `(object, slot)`.
 
-Definition: `ObjectGraph<O:Hashable, S:Hashable>` where `O` is object type and
-`S` is slot type - reference label..
+Definition: `ObjectGraph<Reference:Hashable, State, Slot:Hashable>`.
 
 Example:
 
 ```
-    let graph = ObjectGraph<Int,String>
+    let graph = ObjectGraph<Int,Int,String>
     
-    graph.insert(10)
-    graph.insert(20)
-    graph.insert(30)
-    graph.insert(40)
+    graph.insert(10, state: 0)
+    graph.insert(20, state: 0)
+    graph.insert(30, state: 0)
+    graph.insert(40, state: 0)
 
     graph.connect(10, to: 20, at: "next")
     graph.connect(20, to: 30, at: "next")

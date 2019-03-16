@@ -3,24 +3,24 @@ import XCTest
 
 final class GraphTests: XCTestCase {
     func testInsertNode() {
-        let g = ObjectGraph<Int,Int>()
+        var g = ObjectGraph<Int,Int,Int>()
 
-        g.insert(10)
-        g.insert(20)
+        g.insert(10, state: 0)
+        g.insert(20, state: 0)
         XCTAssertEqual(g.nodes.count, 2)
-        g.insert(10)
+        g.insert(10, state: 0)
         XCTAssertEqual(g.nodes.count, 2)
     }
 
     func testConnect() {
-        let g = ObjectGraph<Int,Int>()
+        var g = ObjectGraph<Int,Int,Int>()
 
-        g.insert(1)
-        g.insert(2)
-        g.insert(3)
-        g.insert(4)
-        g.insert(5)
-        g.insert(6)
+        g.insert(1, state: 0)
+        g.insert(2, state: 0)
+        g.insert(3, state: 0)
+        g.insert(4, state: 0)
+        g.insert(5, state: 0)
+        g.insert(6, state: 0)
 
         XCTAssertEqual(g.nodes.count, 6)
 
@@ -34,14 +34,14 @@ final class GraphTests: XCTestCase {
         XCTAssertEqual(g.slotCount, 4)
     }
     func testHeads() {
-        let g = ObjectGraph<Int,Int>()
+        var g = ObjectGraph<Int,Int,Int>()
 
         XCTAssertNil(g.targets(1))
-        g.insert(1)
+        g.insert(1, state: 0)
         XCTAssertEqual(g.targets(1)?.count, 0)
 
-        g.insert(2)
-        g.insert(3)
+        g.insert(2, state: 0)
+        g.insert(3, state: 0)
         g.connect(1, to: 2, at: 12)
         g.connect(1, to: 3, at: 13)
         g.connect(2, to: 1, at: 13)
@@ -53,5 +53,10 @@ final class GraphTests: XCTestCase {
 
         g.disconnect(1, at: 13)
         XCTAssertEqual(g.targets(1)?.count, 0)
+    }
+
+    func testState() {
+        var g = ObjectGraph<Int,Int,Int>()
+    
     }
 }
