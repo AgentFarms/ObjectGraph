@@ -1,3 +1,12 @@
+/// Object graph is a labelled directed multi graph structure. The vertices of
+/// the graph are called _objects_ and are referred to by a _reference_. Each
+/// object has associated a state. The structure without edges can be
+/// considered a map where keys are references and values are object states.
+/// The arrows (directed edges) of the graph are represented by _slots_
+/// (labels) of edges originating in an object. _Slots_ are unique within
+/// originating object, they don't have to be unique in the whole graph. Unique
+/// arrow representation in the graph is a tuple of type `(Reference, Slot)`.
+///
 public struct ObjectGraph<Reference: Hashable, State, Slot:Hashable> {
     // This is not quite public, but we need it for other typealiases.
     public struct Node {
@@ -86,7 +95,7 @@ public struct ObjectGraph<Reference: Hashable, State, Slot:Hashable> {
         }
     }
 
-    public mutating func updateState(_ newValue: State, at reference: Reference) {
+    public mutating func updateState(_ newValue: State, of reference: Reference) {
         assert(nodes[reference] != nil, "Reference \(reference) not in graph")
         nodes[reference]!.state = newValue
     }
