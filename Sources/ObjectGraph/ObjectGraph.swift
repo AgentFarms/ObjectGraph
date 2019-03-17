@@ -1,4 +1,4 @@
-/// Object graph is a labelled directed multi graph structure. The vertices of
+/// Object graph is a _labelled directed multi graph structure_. The vertices of
 /// the graph are called _objects_ and are referred to by a _reference_. Each
 /// object has associated a state. The structure without edges can be
 /// considered a map where keys are references and values are object states.
@@ -21,40 +21,20 @@ public struct ObjectGraph<Reference: Hashable, State, Slot:Hashable> {
 
     var nodes: [Reference:Node]
 
-    /// Representation of an object from the object graph.
-    ///
-    public struct Object: CustomStringConvertible {
-        public typealias Slots = Dictionary<Slot, Reference>.Keys
-
-        public let reference: Reference
-        public let state: State
-        public let references: [Slot:Reference]
-
-        public init(reference: Reference, state: State, references: [Slot:Reference]) {
-            self.reference = reference
-            self.state = state
-            self.references = references
-        }
-
-        public var description: String {
-            let referencesDesc = references.map {
-                "\($0.key)->\($0.value)"
-            }.joined(separator: ",")
-
-            return "\(reference){\(state); \(referencesDesc)}"
-        }
-
-    }
-
     public typealias References = Dictionary<Reference, Node>.Keys
+    public typealias Transform = GraphTransform<Reference, State, Slot>
+    public typealias TransformList = GraphTransformList<Reference, State, Slot>
 
     public var references: References {
         return nodes.keys
     }
 
     public struct Objects: Collection {
-        public typealias Element = Object
+        // The following type aliases are for collection conformance.
+        // swiftlint:disable nesting
+        public typealias Element = Object<Reference, State, Slot>
         public typealias Index = Dictionary<Reference, Node>.Index
+        // swiftlint:enable nesting
 
         var graph: ObjectGraph
 
@@ -90,9 +70,7 @@ public struct ObjectGraph<Reference: Hashable, State, Slot:Hashable> {
 
     /// Get an object representation by an object reference.
     public subscript(reference: Reference) -> State? {
-        get {
-            return nodes[reference]?.state
-        }
+        return nodes[reference]?.state
     }
 
     public mutating func updateState(_ newValue: State, of reference: Reference) {
